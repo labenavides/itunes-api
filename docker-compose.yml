@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  api:
+    container_name: api-test-lesly
+    build: .
+    image: node-app
+    environment:
+      - REDIS_HOST= redis
+      - REDIS_PORT= 6379
+      - REDIS_PASSWORD= eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    ports:
+      - '3000:3000'
+    depends_on:
+      - redis
+    links:
+      - redis
+    volumes:
+      - .:/usr/src/node-app
+    networks:
+      - node-network
+
+  redis:
+    container_name: redis-test-lesly
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: local
+
+networks:
+  node-network:
+    driver: bridge

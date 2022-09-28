@@ -1,0 +1,107 @@
+components:
+  schemas:
+    Busqueda:
+      type: object
+      required:
+        - total_albumes
+        - total_canciones
+        - albumes
+        - canciones
+      properties:
+        total_albumes:
+          description: total_albumes
+          type: number
+          nullable: false
+          example: 123123
+        total_canciones:
+          description: total_canciones.
+          type: number
+          nullable: false
+          example: 123123
+        albumes:
+          type: array
+          items:
+            type: string
+          example: ["Album 1", "Album 2", "Album 3"]
+
+        canciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Canciones'
+
+    Canciones:
+      type: object
+      required:
+        - cancion_id
+        - nombre_album
+        - nombre_tema
+        - preview_url
+        - fecha_lanzamiento
+        - precio
+
+      properties:
+        nombre_album:
+          description: nombre_album
+          type: string
+          nullable: false
+          example: Queen Best of all
+        cancion_id:
+          description: The ID of the song.
+          type: number
+          nullable: false
+          example: 123123
+        nombre_tema:
+          description: nombre_tema
+          type: string
+          nullable: false
+          example: nombre_tema
+        preview_url:
+          description: preview_url
+          type: string
+          nullable: false
+          example: preview_url
+        fecha_lanzamiento:
+          description: fecha_lanzamiento
+          type: string
+          nullable: false
+          example: fecha_lanzamiento
+        precio:
+          type: object
+          properties:
+            valor:
+              description: valor
+              type: string
+              example: 100
+            moneda:
+              description: valor
+              type: string
+              example: USD
+
+    Favoritos:
+      type: object
+      required:
+        - nombre_banda
+        - cancion_id
+        - usuario
+        - ranking
+      properties:
+        nombre_banda:
+          description: The ID of the Artist.
+          type: string
+          nullable: false
+          example: Queen
+        cancion_id:
+          description: The ID of the song.
+          type: number
+          nullable: false
+          example: 123123
+        usuario:
+          description: The member's first name.
+          type: string
+          nullable: false
+          example: username
+        ranking:
+          description: ranking
+          type: string
+          nullable: false
+          example: "5/5"

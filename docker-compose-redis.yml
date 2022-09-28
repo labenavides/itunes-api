@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  redis:
+    container_name: redis-test-lesly
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: local
+
+networks:
+  node-network:
+    driver: bridge
