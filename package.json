@@ -11,17 +11,13 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "test": "jest -i --colors --verbose --detectOpenHandles",
-    "test:watch": "jest -i --watchAll",
-    "coverage": "jest -i --coverage",
-    "coverage:coveralls": "jest -i --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
     "docker:start": "docker-compose -f docker-compose.yml up",
-    "docker:redis:start": "docker-compose -f docker-compose-redis.yml up",
-    "prepare": "husky install"
+    "docker:redis:start": "docker-compose -f docker-compose-redis.yml up -d",
+    "start:api" : "npm run docker:redis:start && npm run start"
   },
   "keywords": [
     "node",
