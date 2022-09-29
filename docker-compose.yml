@@ -5,20 +5,21 @@ services:
     container_name: api-test-lesly
     build: .
     image: node-app
+    links:
+      - redis
     environment:
-      - REDIS_HOST= redis
+      - REDIS_HOST= host.docker.internal
       - REDIS_PORT= 6379
       - REDIS_PASSWORD= eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     ports:
       - '3000:3000'
     depends_on:
       - redis
-    links:
-      - redis
     volumes:
       - .:/usr/src/node-app
-    networks:
-      - node-network
+    # networks:
+    #   - node-network
+    command: npm start
 
   redis:
     container_name: redis-test-lesly
@@ -34,6 +35,6 @@ volumes:
   redis:
     driver: local
 
-networks:
-  node-network:
-    driver: bridge
+# networks:
+#   node-network:
+#     driver: bridge
