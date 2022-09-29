@@ -11,25 +11,25 @@
 - **Docker support**
 - **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
 
+## Environment Variables
+make a copy of the file `.env.example` and name it `.env`
+The environment variables can be found and modified in the `.env` file. They come with these default values:
+
+PORT=3000
+
+REDIS_HOST=localhost
+
+REDIS_PORT=6379
+
+REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
 ## Commands
 
 Running locally:
 
 ```bash
-npm run dev
+npm install
+npm run start:api
 ```
-
-## Environment Variables
-
-The environment variables can be found and modified in the `.env` file. They come with these default values:
-
-
-PORT=3000
-
-
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
 
 # Port number
 PORT=3000
