@@ -3,7 +3,6 @@ const axios = require('axios');
 const ApiError = require('../utils/ApiError');
 const { SearchResponseDto, BandDto, PrecioDto, FavoritoDto } = require('../dto/band.dto');
 const config = require('../config/config');
-const logger = require('../config/logger');
 const cache = require('../cache/redis');
 
 const ITUNES_SEARCH = '/search';
@@ -59,7 +58,7 @@ const resultsFromItunes = async (itunesSearchUrl, sanitizedName, itunesCacheKey)
   const albums = Array.from(artistAlbums.keys());
 
   const searchResponse = new SearchResponseDto(albums.length, total_canciones, albums, cleanedResultsOfArtist);
-  await cache.saveWithTtl(itunesCacheKey, searchResponse, 60);
+  await cache.saveWithTtl(itunesCacheKey, searchResponse, 3);
   return searchResponse;
 };
 
@@ -67,19 +66,15 @@ const resultsFromItunes = async (itunesSearchUrl, sanitizedName, itunesCacheKey)
 // validar si cancion ya fue agregada
 const markAsFavorites = async (favorite) => {
   const sanitizedUserName = favorite.usuario.toLowerCase();
-  delete favorite.usuario;
-  const favoritesCacheKey = `${FAVORITES_CACHE_BASE_KEY}:${sanitizedUserName}`;
+  const favoritesCacheKey = `${favorite.cancion_id}:${favorite.nombre_banda}`;
 
   let cacheUserFavorites = await cache.get(favoritesCacheKey);
 
   if (!cacheUserFavorites) {
     cacheUserFavorites = new FavoritoDto();
-    cacheUserFavorites.usuario = sanitizedUserName;
   }
   if (cacheUserFavorites.favoritos?.length === 0) {
-    cacheUserFavorites.favoritos = [favorite];
-  } else {
-    cacheUserFavorites.favoritos.push(favorite);
+    cacheUserFavorites= favorite;
   }
   await cache.save(favoritesCacheKey, cacheUserFavorites);
 };
