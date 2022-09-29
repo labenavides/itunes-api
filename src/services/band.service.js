@@ -3,6 +3,7 @@ const axios = require('axios');
 const ApiError = require('../utils/ApiError');
 const { SearchResponseDto, BandDto, PrecioDto, FavoritoDto } = require('../dto/band.dto');
 const config = require('../config/config');
+const logger = require('../config/logger');
 const cache = require('../cache/redis');
 
 const ITUNES_SEARCH = '/search';
@@ -62,21 +63,16 @@ const resultsFromItunes = async (itunesSearchUrl, sanitizedName, itunesCacheKey)
   return searchResponse;
 };
 
-// TODO arreglar / cambiar lo que se guarda en el redis
-// validar si cancion ya fue agregada
 const markAsFavorites = async (favorite) => {
-  const sanitizedUserName = favorite.usuario.toLowerCase();
   const favoritesCacheKey = `${favorite.cancion_id}:${favorite.nombre_banda}`;
 
-  let cacheUserFavorites = await cache.get(favoritesCacheKey);
+  const cacheUserFavorites = await cache.get(favoritesCacheKey);
 
   if (!cacheUserFavorites) {
-    cacheUserFavorites = new FavoritoDto();
+    await cache.save(favoritesCacheKey, favorite);
+  } else {
+    throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Canción ya es favorita');
   }
-  if (cacheUserFavorites.favoritos?.length === 0) {
-    cacheUserFavorites= favorite;
-  }
-  await cache.save(favoritesCacheKey, cacheUserFavorites);
 };
 
 module.exports = {

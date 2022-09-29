@@ -11,6 +11,13 @@
 - **Docker support**
 - **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
 
+## Pre Requisitos
+
+You must have docker installed, since it will be used to raise the image of the tool that will handle the cache (Redis)
+
+### API Cache
+
+For the cache the api uses Redis. You must have a client or extension to be able to view the data that will be cached.
 ## Environment Variables
 make a copy of the file `.env.example` and name it `.env`
 The environment variables can be found and modified in the `.env` file. They come with these default values:
